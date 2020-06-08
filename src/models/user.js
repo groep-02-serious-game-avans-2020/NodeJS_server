@@ -1,5 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const PlayerCharacter = require('./player_character');
 
 const UserSchema = new Schema({
     email : {
@@ -23,6 +24,10 @@ const UserSchema = new Schema({
     },
     scannedQrs : {
         default: []
+    },
+    playerCharacter: {
+        type: PlayerCharacter.PlayerCharacterSchema,
+        default: () => ({})
     }
 })
 
