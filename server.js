@@ -10,6 +10,7 @@ const user_routes = require('./routes/user_routes')
 const question_routes = require('./routes/survey_routes/question_routes')
 const answer_routes = require('./routes/survey_routes/answer_routes')
 const survey_routes = require('./routes/survey_routes/survey_routes')
+const score_routes = require('./routes/score_routes')
 
 const app = express()
 
@@ -29,6 +30,7 @@ user_routes(app)
 answer_routes(app)
 question_routes(app)
 survey_routes(app)
+score_routes(app)
 
 const port = process.env.PORT || '3000';
 app.set('port', port);
