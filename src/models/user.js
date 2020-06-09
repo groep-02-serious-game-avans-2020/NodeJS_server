@@ -22,9 +22,10 @@ const UserSchema = new Schema({
         required : [true, 'Password is required'],
         select : false
     },
-    scannedQrs : {
+    scannedQrs: [{
+        type: String,
         default: []
-    },
+    }],
     playerCharacter: {
         type: PlayerCharacter.PlayerCharacterSchema,
         default: () => ({})

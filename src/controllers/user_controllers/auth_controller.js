@@ -26,7 +26,9 @@ module.exports = {
     },
 
     login(req, res) {
-        User.findOne({email : req.body.email}).select('+password')
+        User.findOne({email : req.body.email})
+        .select('+password')
+        .populate('player_character')
         .then((user) => {
             if(!user) {
                 res.status(404).send({Error : "User not found"})
@@ -38,7 +40,25 @@ module.exports = {
                     var token = jwt.sign({id : user._id}, config.secret, {
                         expiresIn: 86400
                     })
-                    res.status(200).send({auth : true, token: token, userid : user.id})
+                    console.log({
+                        auth: true, 
+                        token: token, 
+                        userid: user.id, 
+                        email: user.email,
+                        displayName: user.displayName,
+                        scannedQrs: user.scannedQrs,
+                        characterModel: user.playerCharacter
+                    });
+                                      
+                    res.status(200).send({
+                        auth: true, 
+                        token: token, 
+                        userid: user.id, 
+                        email: user.email,
+                        displayName: user.displayName,
+                        scannedQrs: user.scannedQrs,
+                        characterModel: user.playerCharacter
+                    })
                 }
             }
         })
