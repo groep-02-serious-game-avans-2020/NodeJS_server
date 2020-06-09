@@ -20,7 +20,7 @@ module.exports = {
             if(err.name == 'MongoError' && err.code == 11000) {
                 res.status(401).send({Error : "This email or display name is already taken."})
             } else {
-                res.status(401).send({ err })
+                res.status(401).send( err )
             }
         })
     },
@@ -57,6 +57,27 @@ module.exports = {
                         return res.status(401).send({Error : 'Invalid token'})
                     } else {
                         if(decoded) next()
+                    }
+                })
+            }
+        }
+    },
+
+    isTokenStillValid(req, res, next) {
+        if(!req.headers.authorization) {
+            return res.status(401).send({valid : false, Error : 'No token provided'})
+        } else {
+            let token = req.headers.authorization.split(' ')[1]
+            if(token === 'null' || token === null) {
+                return res.status(401).send({valid: false, Error : 'No token provided'})
+            } else {
+                jwt.verify(token, config.secret, (err, decoded) => {
+                    if(err) {
+                        console.log(err)
+                        return res.status(401).send(err)
+                    } if (decoded) {
+                        console.log(decoded)
+                        return res.status(200).send({valid: true, Message : 'token is still valid'})
                     }
                 })
             }

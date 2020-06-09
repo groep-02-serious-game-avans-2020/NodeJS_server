@@ -9,6 +9,9 @@ module.exports = (app) => {
     //get a single user
     app.get('/api/user/:id', UserController.getOne)
 
+    //check token is valid
+    app.post('/api/check-token', AuthController.isTokenStillValid)
+
     //register a new user
     app.post('/api/user', AuthController.register)
 
