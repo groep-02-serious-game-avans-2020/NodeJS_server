@@ -7,7 +7,7 @@ module.exports = (app) => {
     app.get('/api/users', UserController.getAll)
 
     //get a single user
-    app.get('/api/user/:id', UserController.getOne)
+    app.get('/api/user/:id', AuthController.checkSpecificUserToken, UserController.getOne)
 
     //check token is valid
     app.post('/api/check-token', AuthController.isTokenStillValid)
