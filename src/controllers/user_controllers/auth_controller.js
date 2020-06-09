@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const config = require('../../../config/mongo_config')
 
+const UserController = require('./user_controller')
+
 module.exports = {
 
     register(req, res) {
@@ -76,8 +78,32 @@ module.exports = {
                         console.log(err)
                         return res.status(401).send(err)
                     } if (decoded) {
-                        console.log(decoded)
                         return res.status(200).send({valid: true, Message : 'token is still valid'})
+                    }
+                })
+            }
+        }
+    },
+
+    checkSpecificUserToken(req, res, next) {
+        console.log("we here")
+        if(!req.headers.authorization) {
+             res.status(401).send({valid : false, Error : 'No token provided'})
+        } else {
+            let token = req.headers.authorization.split(' ')[1]
+            if(token === 'null' || token === null) {
+                 res.status(401).send({valid: false, Error : 'No token provided'})
+            } else {
+                jwt.verify(token, config.secret, (err,decoded) => {
+                    if(err) {
+                        res.status(401).send({Error : 'token is invalid'})
+                    }
+                    if(decoded) {
+                        if (decoded.id == req.params.id) {
+                            next()
+                        } else {
+                            res.status(401).send({Error : 'You have no permission to view this data.'})
+                        }
                     }
                 })
             }
