@@ -1,4 +1,4 @@
-const SurveyController = require('../../src/controllers/survey_controllers/survey_controller')
+const SurveyController = require('../src/controllers/survey_controller');
 
 module.exports = (app) => {
 
