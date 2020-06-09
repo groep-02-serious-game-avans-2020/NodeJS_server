@@ -37,10 +37,15 @@ module.exports = {
                 if(!passwordIsValid) {
                     res.status(401).send({Error : 'Login is invalid'})
                 } else {
+                    if(user.admin == true) {
+                        var admintoken = jwt.sign({id : user._id}, "admin", {
+                            expiresIn:86400
+                        })
+                    }
                     var token = jwt.sign({id : user._id}, config.secret, {
                         expiresIn: 86400
                     })
-                    res.status(200).send({auth : true, token: token, userid : user.id})
+                    res.status(200).send({auth : true, token: token, admin: admintoken, userid : user.id})
                 }
             }
         })
@@ -104,6 +109,26 @@ module.exports = {
                         } else {
                             res.status(401).send({Error : 'You have no permission to view this data.'})
                         }
+                    }
+                })
+            }
+        }
+    },
+    
+    validateAdmin(req, res, next) {
+        if(!req.headers.admin) {
+            return res.status(401).send({Error : 'No admin token provided'})
+        } else {
+            let admintoken = req.headers.admin.split(' ')[1]
+            if(admintoken == 'null' || admintoken == null) {
+                res.status(401).send({Error :'No admin token provided'})
+            } else {
+                jwt.verify(admintoken, "admin", (err, decoded) => {
+                    if(err) {
+                        res.status(401).send({Error : "Admintoken is invalid"})
+                    } 
+                    if (decoded) {
+                        next()
                     }
                 })
             }
