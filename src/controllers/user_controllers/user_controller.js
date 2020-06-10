@@ -13,12 +13,25 @@ module.exports = {
     },
 
     getOne(req,res) {
+        console.log("We also here")
+        console.log(req.params.id)
         User.findById(req.params.id)
         .then((user) => {
-            res.status(200).send(user)
+            console.log(user)
+            return res.status(200).send(user)
         })
         .catch((error) => {
-            res.status(404).send({Error : "User not found"})
+            return res.status(404).send({Error : "User not found"})
+        })
+    },
+
+    getSingleUser(id) {
+        User.findById(id)
+        .then((user) => {
+            return user
+        })
+        .catch((error) => {
+            return null
         })
     },
 
