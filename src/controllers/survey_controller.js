@@ -31,7 +31,7 @@ module.exports = {
                 res.status(200).send({ Message: "Survey created.", createdSurvey: survey })
             })
             .catch((err) => {
-                res.status(401).send({ Error: err })
+                res.status(400).send(err);
             })
     },
 
