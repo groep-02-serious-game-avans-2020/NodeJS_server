@@ -13,4 +13,7 @@ module.exports = (app) => {
 
     //delete a survey
     app.delete('/api/survey/:id', SurveyController.delete)
+
+    //submit answers to survey
+    app.put('/api/survey/:id', SurveyController.submitAnswers)
 }
