@@ -13,11 +13,15 @@ module.exports = {
     },
 
     getOne(req, res) {
+        console.log(`Survey ${req.params.id} requested`);
+        
         Survey.findById(req.params.id)
             .then((survey) => {
+                console.log(`Survey ${survey.title} found`);
                 res.status(200).send(survey)
             })
             .catch((err) => {
+                console.log(`Survey ${req.params.id} not found`);
                 res.status(404).send({ Error: "Survey not found" })
             })
     },
