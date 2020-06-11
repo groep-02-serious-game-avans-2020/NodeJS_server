@@ -1,5 +1,5 @@
 const Survey = require('../models/survey')
-const { Mongoose } = require('mongoose')
+const User = require('../models/user')
 
 module.exports = {
 
@@ -15,7 +15,7 @@ module.exports = {
 
     getOne(req, res) {
         console.log(`Survey ${req.params.id} requested`);
-        
+
         Survey.findById(req.params.id)
             .then((survey) => {
                 console.log(`Survey ${survey.title} found`);
@@ -53,17 +53,27 @@ module.exports = {
     },
 
     submitAnswers(req, res) {
-        const answers = req.body;
+        const answers = req.body.answers;
 
         Survey.findById(req.params.id)
             .then((survey) => {
                 answers.forEach(answer => {
                     survey.answers.push(answer);
                 });
-
                 survey.save()
                     .then(() => {
-                        res.status(200).send({ Message: "Answers submitted." });
+                        User.findById(req.body.userId)
+                            .then((user) => {
+                                user.scannedQrs.push(req.params.id);
+                                user.save()
+                                    .then(() => {
+                                        res.status(200).send({ Message: "Answers submitted." });
+                                    })
+                                    .catch((err) => {
+                                        console.log(err);
+                                        res.status(400).send({ Error: "Server error" })
+                                    });
+                            })
                     })
                     .catch((err) => {
                         console.log(err);
