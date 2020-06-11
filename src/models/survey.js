@@ -10,7 +10,6 @@ const SurveySchema = new Schema({
     questions: [{
         questionNumber: {
             type: Number,
-            unique: true,
             required: true,
             default: 1,
         },
