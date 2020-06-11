@@ -1,4 +1,5 @@
 const Survey = require('../models/survey')
+const { Mongoose } = require('mongoose')
 
 module.exports = {
 
@@ -56,8 +57,8 @@ module.exports = {
 
         Survey.findById(req.params.id)
             .then((survey) => {
-                survey.set({
-                    answers: answers
+                answers.forEach(answer => {
+                    survey.answers.push(answer);
                 });
 
                 survey.save()
