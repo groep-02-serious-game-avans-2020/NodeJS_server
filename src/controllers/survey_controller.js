@@ -72,7 +72,6 @@ module.exports = {
                                 user.scannedQrs.push(req.params.id);
                                 user.save()
                                     .then(() => {
-                                        console.log(survey);
                                         res.status(200).send(survey.highScores);
                                     })
                                     .catch((err) => {
@@ -91,5 +90,19 @@ module.exports = {
                 console.log(err);
                 res.status(404).send({ Error: "Survey not found" });
             });
+    },
+
+    getHighScores(req, res) {
+        Survey.findById(req.params.id)
+        .then(scores => {
+            var sorted = scores.highScores.sort(function (l, r) {
+                return l.score - r.score;
+            });
+            res.status(200).send(sorted)
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).send({ Error: "Server error" })
+        });
     },
 }
