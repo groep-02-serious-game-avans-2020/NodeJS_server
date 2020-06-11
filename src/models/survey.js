@@ -30,6 +30,16 @@ const SurveySchema = new Schema({
         },
         textAnswer: String,
         numberAnswer: Number,
+    }],
+    highScores: [{
+        userName: {
+            type: String,
+            required: true
+        },
+        score: {
+            type: Number,
+            required: true
+        }
     }]
 });
 

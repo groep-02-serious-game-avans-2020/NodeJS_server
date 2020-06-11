@@ -60,6 +60,11 @@ module.exports = {
                 answers.forEach(answer => {
                     survey.answers.push(answer);
                 });
+                survey.highScores.push({
+                    userName: req.body.userName,
+                    score: req.body.highScore
+                });
+
                 survey.save()
                     .then(() => {
                         User.findById(req.body.userId)
@@ -67,7 +72,8 @@ module.exports = {
                                 user.scannedQrs.push(req.params.id);
                                 user.save()
                                     .then(() => {
-                                        res.status(200).send({ Message: "Answers submitted." });
+                                        console.log(survey);
+                                        res.status(200).send(survey.highScores);
                                     })
                                     .catch((err) => {
                                         console.log(err);
@@ -85,5 +91,5 @@ module.exports = {
                 console.log(err);
                 res.status(404).send({ Error: "Survey not found" });
             });
-    }
+    },
 }
