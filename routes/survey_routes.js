@@ -18,5 +18,5 @@ module.exports = (app) => {
     app.put('/api/survey/:id', SurveyController.submitAnswers)
 
     //submit answers to survey
-    app.get('/api/survey-highscores/:id', SurveyController.getHighScores)
+    //app.get('/api/survey-highscores/:id', SurveyController.getHighScores)
 }
